@@ -95,6 +95,4 @@ Exemplo de entrada no `server.log` (formato gerado por `tslog`):
 make clean
 ```
 
-Se quiser que eu também atualize o `README` com exemplos de uso mais detalhados ou adicionar instruções para mudança de porta/host, me diga qual formato prefere.
-
 
