@@ -7,7 +7,6 @@ A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em a
 ---
 
 ## 📂 Estrutura do Projeto
-.
 ├── tslog.h      # Cabeçalho da biblioteca  
 ├── tslog.c      # Implementação da biblioteca  
 ├── main.c       # Programa de teste (simulação com múltiplas threads)  
@@ -19,7 +18,9 @@ A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em a
 
 ### 1. Clonar o repositório e acessar a tag da Etapa 1
 $ git clone https://github.com/tahaluh/lp2-chat-tcp.git
+
 $ cd lp2-trabalho-final  
+
 $ git checkout v1-logging  
 
 ### 2. Compilar
@@ -32,6 +33,7 @@ $ ./main
 $ cat saida.log  
 
 Exemplo de saída:
+
 [2025-10-03 23:40:12] Thread 1 - mensagem 1  
 [2025-10-03 23:40:12] Thread 2 - mensagem 1  
 [2025-10-03 23:40:12] Thread 3 - mensagem 1  
