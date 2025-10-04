@@ -1,20 +1,19 @@
-# Etapa 1 — Logging Thread-Safe (v1-logging)
+# Etapa 2 — Protótipo CLI Cliente/Servidor (v2-cli)
 
 ## 🔹 Objetivo
-Implementação da biblioteca **libtslog** para registro de logs com segurança em ambiente concorrente.  
-A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em arquivo com **timestamp**.
+Implementar um protótipo **cliente/servidor TCP** que utiliza a biblioteca `libtslog` (Etapa 1) para registrar conexões e mensagens de forma thread-safe.  
+O sistema simula um **chat mínimo em linha de comando** com múltiplos clientes.
 
 ---
 
-## 🖼️ Arquitetura Inicial
-![Arquitetura Etapa 1](docs/Arquitetura_Etapa1.png)
-
-
 ## 📂 Estrutura do Projeto
-├── tslog.h      # Cabeçalho da biblioteca  
-├── tslog.c      # Implementação da biblioteca  
-├── main.c       # Programa de teste (simulação com múltiplas threads)  
-└── Makefile     # Automação da compilação  
+```text
+├── tslog.h          # Cabeçalho da biblioteca de logging
+├── tslog.c          # Implementação da biblioteca
+├── server.c         # Servidor TCP concorrente
+├── client.c         # Cliente TCP (modo interativo ou automático)
+├── Makefile         # Automação da compilação
+└── test_clients.sh  # Script para simular múltiplos clientes
 
 ---
 
@@ -23,7 +22,7 @@ A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em a
 ### 1. Clonar o repositório e acessar a tag da Etapa 1
 $ git clone https://github.com/tahaluh/lp2-chat-tcp.git
 
-$ cd lp2-trabalho-final  
+$ cd lp2-chat-tcp  
 
 $ git checkout v1-logging  
 
