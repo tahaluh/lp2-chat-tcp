@@ -6,6 +6,10 @@ A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em a
 
 ---
 
+## 🖼️ Arquitetura Inicial
+![Arquitetura Etapa 1](docs/Arquitetura_Etapa1.png)
+
+
 ## 📂 Estrutura do Projeto
 ├── tslog.h      # Cabeçalho da biblioteca  
 ├── tslog.c      # Implementação da biblioteca  
