@@ -18,7 +18,7 @@ A biblioteca garante exclusão mútua com `pthread_mutex` e grava mensagens em a
 ## 🚀 Como executar
 
 ### 1. Clonar o repositório e acessar a tag da Etapa 1
-$ git clone https://github.com/tahaluh/lp2-chat-tcp.git 
+$ git clone https://github.com/tahaluh/lp2-chat-tcp.git
 $ cd lp2-trabalho-final  
 $ git checkout v1-logging  
 
