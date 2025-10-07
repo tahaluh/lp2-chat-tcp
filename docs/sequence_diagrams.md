@@ -96,7 +96,7 @@ sequenceDiagram
     BW->>BW: switch(message.type) - MSG_BROADCAST
     BW->>CM: client_manager_broadcast(message.content, sender_fd)
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: for(i=0; i menor que MAX_CLIENTS; i++)
+    CM->>CM: Itera por todos os clientes conectados
     CM->>C2: send("[Cliente1]: Olá pessoal!", MSG_NOSIGNAL)
     CM->>C3: send("[Cliente1]: Olá pessoal!", MSG_NOSIGNAL)
     CM->>CM: pthread_mutex_unlock(&mutex)
@@ -124,7 +124,7 @@ sequenceDiagram
     
     HT->>CM: client_manager_find_by_username("User_8080")
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: for(i=0; i menos que MAX_CLIENTS; i++) strcmp(username)
+    CM->>CM: Busca username em todos os clientes
     CM->>CM: pthread_mutex_unlock(&mutex)
     CM-->>HT: return ClientInfo* ou NULL
     
