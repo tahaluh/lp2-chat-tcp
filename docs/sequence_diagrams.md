@@ -30,7 +30,7 @@ sequenceDiagram
     HT->>HT: process_command(client_sock, "/auth chat123")
     HT->>CM: client_manager_authenticate(socket, "chat123")
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: if (strcmp(password, "chat123") == 0)
+    CM->>CM: if (strcmp(password, "chat123") igual a 0)
     CM->>CM: client.authenticated = true
     CM->>CM: pthread_mutex_unlock(&mutex)
     CM->>L: tslog_write("Cliente autenticado: username")
@@ -41,7 +41,7 @@ sequenceDiagram
     Q->>Q: pthread_mutex_lock(&queue_mutex)
     Q->>Q: while(count >= MAX_QUEUE_SIZE) pthread_cond_wait(&not_full)
     Q->>Q: queue[rear] = join_message
-    Q->>Q: count++, rear = (rear + 1) % MAX_QUEUE_SIZE
+    Q->>Q: count incrementa, rear incrementa circularmente
     Q->>Q: pthread_cond_signal(&not_empty)
     Q->>Q: pthread_mutex_unlock(&queue_mutex)
 ```
@@ -63,7 +63,7 @@ sequenceDiagram
     HT->>HT: recv(client_sock, buffer, BUFFER_SIZE)
     
     alt Cliente não autenticado
-        HT->>C1: "⚠ Você precisa se autenticar: /auth <senha>"
+        HT->>C1: "⚠ Você precisa se autenticar: /auth senha"
         HT->>L: tslog_write("Mensagem rejeitada (não autenticado)")
     else Cliente autenticado
         HT->>HT: contains_profanity(buffer) - verifica lista
@@ -75,9 +75,9 @@ sequenceDiagram
             HT->>HT: snprintf("[%s]: %s", username, buffer)
             HT->>Q: tsqueue_enqueue(MSG_BROADCAST, formatted_msg)
             Q->>Q: pthread_mutex_lock(&queue_mutex)
-            Q->>Q: while(count >= MAX_QUEUE_SIZE) pthread_cond_wait(&not_full)
+            Q->>Q: while(count maior ou igual MAX_QUEUE_SIZE) pthread_cond_wait(&not_full)
             Q->>Q: queue[rear] = broadcast_message
-            Q->>Q: count++, rear++
+            Q->>Q: count incrementa, rear incrementa
             Q->>Q: pthread_cond_signal(&not_empty)
             Q->>Q: pthread_mutex_unlock(&queue_mutex)
             
@@ -87,16 +87,16 @@ sequenceDiagram
     
     BW->>Q: tsqueue_dequeue(&message)
     Q->>Q: pthread_mutex_lock(&queue_mutex)
-    Q->>Q: while(count == 0) pthread_cond_wait(&not_empty)
+    Q->>Q: while(count igual a 0) pthread_cond_wait(&not_empty)
     Q->>Q: message = queue[front]
-    Q->>Q: count--, front++
+    Q->>Q: count decrementa, front incrementa
     Q->>Q: pthread_cond_signal(&not_full)
     Q->>Q: pthread_mutex_unlock(&queue_mutex)
     
     BW->>BW: switch(message.type) - MSG_BROADCAST
     BW->>CM: client_manager_broadcast(message.content, sender_fd)
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: for(i=0; i<MAX_CLIENTS; i++)
+    CM->>CM: for(i=0; i menor que MAX_CLIENTS; i++)
     CM->>C2: send("[Cliente1]: Olá pessoal!", MSG_NOSIGNAL)
     CM->>C3: send("[Cliente1]: Olá pessoal!", MSG_NOSIGNAL)
     CM->>CM: pthread_mutex_unlock(&mutex)
@@ -119,12 +119,12 @@ sequenceDiagram
 
     C1->>HT: "/msg User_8080 Olá privado!"
     HT->>HT: process_command(client_sock, "/msg User_8080 Olá privado!")
-    HT->>HT: strncmp(command, "/msg ", 5) == 0
+    HT->>HT: strncmp(command, "/msg ", 5) igual a 0
     HT->>HT: Parse: target="User_8080", message="Olá privado!"
     
     HT->>CM: client_manager_find_by_username("User_8080")
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: for(i=0; i<MAX_CLIENTS; i++) strcmp(username)
+    CM->>CM: for(i=0; i menos que MAX_CLIENTS; i++) strcmp(username)
     CM->>CM: pthread_mutex_unlock(&mutex)
     CM-->>HT: return ClientInfo* ou NULL
     
@@ -135,7 +135,7 @@ sequenceDiagram
         Q->>Q: strcpy(message.username, "Cliente1")
         Q->>Q: strcpy(message.target, "User_8080")
         Q->>Q: strcpy(message.content, "Olá privado!")
-        Q->>Q: queue[rear] = message, count++
+        Q->>Q: queue[rear] = message, count incrementa
         Q->>Q: pthread_cond_signal(&not_empty)
         Q->>Q: pthread_mutex_unlock(&queue_mutex)
         
@@ -194,7 +194,7 @@ sequenceDiagram
         Q->>Q: pthread_mutex_lock(&queue_mutex)
         Q->>Q: message.type = MSG_LEAVE
         Q->>Q: strcpy(message.username, client.username)
-        Q->>Q: queue[rear] = leave_message, count++
+        Q->>Q: queue[rear] = leave_message, count incrementa
         Q->>Q: pthread_cond_signal(&not_empty)
         Q->>Q: pthread_mutex_unlock(&queue_mutex)
         
@@ -213,7 +213,7 @@ sequenceDiagram
     HT->>HT: close(client_sock)
     HT->>CM: client_manager_remove(client_sock)
     CM->>CM: pthread_mutex_lock(&mutex)
-    CM->>CM: clients[i].socket = -1, count--
+    CM->>CM: clients[i].socket = -1, count decrementa
     CM->>CM: pthread_cond_signal(&slot_available)  
     CM->>CM: pthread_mutex_unlock(&mutex)
     CM->>L: tslog_write("Cliente removido: User_8080 (socket=N)")
@@ -245,7 +245,7 @@ sequenceDiagram
     S->>Q: tsqueue_enqueue(SHUTDOWN message)
     Q->>Q: pthread_mutex_lock(&queue_mutex)
     Q->>Q: shutdown_msg.content = "SHUTDOWN"
-    Q->>Q: queue[rear] = shutdown_msg, count++
+    Q->>Q: queue[rear] = shutdown_msg, count incrementa
     Q->>Q: pthread_cond_signal(&not_empty)
     Q->>Q: pthread_mutex_unlock(&queue_mutex)
     
@@ -255,7 +255,7 @@ sequenceDiagram
     
     BW->>Q: tsqueue_dequeue(&message)
     Q->>Q: Protocolo thread-safe de dequeue
-    BW->>BW: if (strcmp(message.content, "SHUTDOWN") == 0)
+    BW->>BW: if (strcmp(message.content, "SHUTDOWN") igual a 0)
     BW->>L: tslog_write("Thread de broadcast recebeu sinal de shutdown")
     BW->>BW: break (sai do loop while)
     
@@ -268,7 +268,7 @@ sequenceDiagram
     Note over HT: Threads de cliente terminam naturalmente
     Note over HT: (recv() falha quando sockets fecham)
     
-    S->>S: if (server_socket >= 0) close(server_socket)
+    S->>S: if (server_socket maior ou igual 0) close(server_socket)
     S->>S: printf("Finalizando componentes...")
     
     S->>Q: tsqueue_destroy()
@@ -316,7 +316,7 @@ sequenceDiagram
         
     else Modo Interativo - /quit
         User->>C: "/quit"
-        C->>C: strcmp(input, "/quit") == 0
+        C->>C: strcmp(input, "/quit") igual a 0
         C->>C: printf("Saindo do chat...")
         C->>S: send_message("/quit")
         S->>C: "Até logo! Desconectando..."
